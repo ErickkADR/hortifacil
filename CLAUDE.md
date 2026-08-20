@@ -51,6 +51,14 @@ pega uma **URL assinada com expiração curta** (baixar na hora, não guardar a 
 `public/images/produtos/` → `sharp` (instalado com `--no-save`, não é dependência do projeto)
 redimensiona pra ~700px/qualidade 80 antes de comitar.
 
+## Telas do admin
+- **`/admin` (Pedidos)** — lista os pedidos já feitos (checkout do cliente + "Montar pedido" do
+  admin): data, forma de pagamento, total, itens (expande por linha) e status editável
+  (aberto/pago/cancelado) via `atualizarStatusPedido`. Antes disso não existia — só dava pra
+  criar pedido, nunca ver os que já tinham sido feitos.
+- **`/admin/montar-pedido`** — o POS manual (`AdminOrderBuilder`), que antes vivia em `/admin`.
+- **`/admin/produtos`** — CRUD de produto.
+
 ## Pendências conhecidas
 - ✅ **Bug do checkout (RLS 42501) corrigido em 21/08** — causa real: as policies de
   `orders`/`order_items` não estavam aplicadas no banco ao vivo (schema rodado antes de elas
