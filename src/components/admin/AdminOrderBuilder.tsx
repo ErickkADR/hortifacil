@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import type { Product, MetodoPagamento } from "@/types/database";
@@ -22,6 +23,7 @@ export function AdminOrderBuilder({ products }: { products: Product[] }) {
   const [metodo, setMetodo] = useState<MetodoPagamento | null>(null);
   const [pending, startTransition] = useTransition();
   const [mensagem, setMensagem] = useState<string | null>(null);
+  const [sucesso, setSucesso] = useState(false);
 
   const total = useMemo(
     () => linhas.reduce((sum, l) => sum + l.product.preco * l.quantidade, 0),
@@ -52,6 +54,7 @@ export function AdminOrderBuilder({ products }: { products: Product[] }) {
   function finalizar() {
     if (!metodo || linhas.length === 0) return;
     setMensagem(null);
+    setSucesso(false);
     startTransition(async () => {
       const res = await criarPedido(
         linhas.map((l) => ({ productId: l.product.id, quantidade: l.quantidade })),
@@ -66,6 +69,7 @@ export function AdminOrderBuilder({ products }: { products: Product[] }) {
           ? "Pedido fechado (modo demonstração — Supabase ainda não plugado)."
           : `Pedido #${res.numero} fechado com sucesso.`,
       );
+      setSucesso(!res.demo);
       setLinhas([]);
       setMetodo(null);
     });
@@ -193,7 +197,19 @@ export function AdminOrderBuilder({ products }: { products: Product[] }) {
             ))}
           </div>
 
-          {mensagem && <p className="mb-3 text-xs text-ink-soft">{mensagem}</p>}
+          {mensagem && (
+            <p className="mb-3 text-xs text-ink-soft">
+              {mensagem}
+              {sucesso && (
+                <>
+                  {" "}
+                  <Link href="/admin" className="font-medium text-leaf-deep underline">
+                    Ver pedidos
+                  </Link>
+                </>
+              )}
+            </p>
+          )}
 
           <button
             onClick={finalizar}

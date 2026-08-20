@@ -1,9 +1,11 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { requireAdmin } from "@/lib/dal";
 import { getProducts } from "@/lib/data/products";
-import type { MetodoPagamento } from "@/types/database";
+import type { MetodoPagamento, StatusPedido } from "@/types/database";
 
 export type CheckoutItem = { productId: string; quantidade: number };
 
@@ -57,5 +59,20 @@ export async function criarPedido(items: CheckoutItem[], metodoPagamento: Metodo
     return { ok: false as const, error: "Pedido criado, mas faltou salvar os itens." };
   }
 
+  revalidatePath("/admin");
   return { ok: true as const, demo: false as const, numero: order.numero, total };
+}
+
+export async function atualizarStatusPedido(orderId: string, status: StatusPedido) {
+  await requireAdmin();
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
+
+  if (error) {
+    return { ok: false as const, error: "Não deu pra atualizar o status do pedido." };
+  }
+
+  revalidatePath("/admin");
+  return { ok: true as const };
 }

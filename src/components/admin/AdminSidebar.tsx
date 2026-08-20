@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, Package, LogOut, Leaf } from "lucide-react";
+import { ClipboardList, ShoppingCart, Package, LogOut, Leaf } from "lucide-react";
 import { logout } from "@/app/actions/auth";
 
 const LINKS = [
   { href: "/admin", label: "Pedidos", icon: ClipboardList },
+  { href: "/admin/montar-pedido", label: "Montar pedido", icon: ShoppingCart },
   { href: "/admin/produtos", label: "Produtos", icon: Package },
 ];
 
