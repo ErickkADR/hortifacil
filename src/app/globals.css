@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #f6f4ee;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef1ea;
+  --color-ink: #16241a;
+  --color-ink-soft: #4a5a4d;
+  --color-leaf: #4a8f5c;
+  --color-leaf-deep: #245934;
+  --color-leaf-bright: #6fcf87;
+  --color-hero-bg: #0a1510;
+  --color-hero-ink: #f2f6f0;
+  --color-hero-ink-soft: rgba(242, 246, 240, 0.68);
+  --color-border: rgba(22, 36, 26, 0.08);
+  --color-danger: #c0392b;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-leaf: var(--color-leaf);
+  --color-leaf-deep: var(--color-leaf-deep);
+  --color-leaf-bright: var(--color-leaf-bright);
+  --color-hero-bg: var(--color-hero-bg);
+  --color-hero-ink: var(--color-hero-ink);
+  --color-hero-ink-soft: var(--color-hero-ink-soft);
+  --color-border: var(--color-border);
+  --color-danger: var(--color-danger);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-sora);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+::selection {
+  background: var(--color-leaf-bright);
+  color: var(--color-hero-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
