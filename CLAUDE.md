@@ -52,18 +52,22 @@ pega uma **URL assinada com expiração curta** (baixar na hora, não guardar a 
 redimensiona pra ~700px/qualidade 80 antes de comitar.
 
 ## Pendências conhecidas
-- 🔴 **BUG ABERTO (20/08): "Finalizar pedido" falha** — `/carrinho` e o "Montar pedido" do
-  admin mostram "Não deu pra registrar o pedido" ao tentar `criarPedido`
-  (`src/app/actions/orders.ts`). Causa real não diagnosticada — suspeita principal é o schema
-  (tabelas `orders`/`order_items`) não estar 100% aplicado no banco ao vivo. Já adicionei
-  `console.error(orderError)` / `console.error(itemsError)` na action — a próxima tentativa vai
-  aparecer no terminal do `npm run dev` com o erro real do Supabase, ler isso primeiro antes de
-  tentar qualquer coisa. Ver [[hortifacil-engineer/04-checkout-nao-registra-pedido]].
-- **Rodar o SQL de sincronização**: `supabase/schema.sql` (schema completo, se ainda não
-  rodado) + `supabase/atualizar-galeria-2026-08-20.sql` (preenche a coluna `imagens` dos 18
-  produtos — o `insert ... on conflict do nothing` do schema não faz `update` em quem já
-  existe). Sem isso o Supabase ao vivo fica sem a galeria (a home/produto funcionam do mesmo
-  jeito, só sem as 4 fotos).
+- ✅ **Bug do checkout (RLS 42501) corrigido em 21/08** — causa real: as policies de
+  `orders`/`order_items` não estavam aplicadas no banco ao vivo (schema rodado antes de elas
+  existirem, ou rodadas sem `drop policy if exists` numa tentativa anterior). Fix em
+  `supabase/corrigir-rls-pedidos-2026-08-21.sql` (idempotente, já rodado pelo Erick). Ver
+  [[hortifacil-engineer/04-checkout-nao-registra-pedido]].
+- **Rodar o SQL de sincronização** (se ainda não rodado): `supabase/schema.sql` (schema
+  completo) + `supabase/atualizar-galeria-2026-08-20.sql` (galeria dos 18 produtos originais) +
+  `supabase/adicionar-produtos-2026-08-20.sql` (os 25 produtos novos abaixo). O
+  `insert ... on conflict do nothing` do schema não faz `update` em quem já existe.
+- **Catálogo expandido em 20/08**: +25 produtos (12 frutas, 8 legumes, 5 verduras) via
+  Magnific/Freepik — só foto de capa por enquanto, sem galeria de 4 fotos (fica pra próxima
+  rodada se o Erick quiser). Novos: abacate, mamão, maracujá, melão, tangerina, ameixa, caqui,
+  goiaba, coco, cereja, romã, figo, amora, abobrinha, abóbora, berinjela, pepino, beterraba,
+  milho, cebola, batata-doce, couve, espinafre, rúcula, repolho. Rodar
+  `supabase/adicionar-produtos-2026-08-20.sql` no banco ao vivo pra eles aparecerem lá (o modo
+  demonstração já os tem via `products-seed.ts`).
 - **Primeiro admin**: depois de aplicar o schema e criar a conta pela tela de login, rodar o
   `update` comentado no fim do `schema.sql` pra virar admin.
 - Checkout não tem gateway de pagamento de verdade — "Débito/Crédito/PIX" é só metadado do

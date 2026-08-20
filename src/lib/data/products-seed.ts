@@ -98,6 +98,131 @@ const semGaleria: Omit<Product, "imagens">[] = [
     imagem_url: "/images/produtos/pessego.png", estoque: 15, ativo: true,
     descricao: "Macio, suculento e delicadamente doce. Ótimo puro ou numa torta de fim de semana.",
   },
+  {
+    id: "abacate", slug: "abacate", nome: "Abacate", categoria: "Fruta", preco: 9.9, unidade: "kg",
+    imagem_url: "/images/produtos/abacate.jpg", estoque: 25, ativo: true,
+    descricao: "Cremoso e nutritivo, no ponto certo pra guacamole, torradas ou puro com uma pitada de sal.",
+  },
+  {
+    id: "mamao", slug: "mamao", nome: "Mamão", categoria: "Fruta", preco: 6.9, unidade: "unid",
+    imagem_url: "/images/produtos/mamao.jpg", estoque: 25, ativo: true,
+    descricao: "Polpa macia e adocicada, rica em fibras. Ótimo puro no café da manhã ou batido com laranja.",
+  },
+  {
+    id: "maracuja", slug: "maracuja", nome: "Maracujá", categoria: "Fruta", preco: 8.9, unidade: "kg",
+    imagem_url: "/images/produtos/maracuja.jpg", estoque: 20, ativo: true,
+    descricao: "Azedinho e aromático, a fruta certa pro suco refrescante ou pra dar acidez especial na sobremesa.",
+  },
+  {
+    id: "melao", slug: "melao", nome: "Melão", categoria: "Fruta", preco: 5.9, unidade: "kg",
+    imagem_url: "/images/produtos/melao.jpg", estoque: 20, ativo: true,
+    descricao: "Polpa suculenta e doce, com mais água que quase qualquer fruta. Perfeito gelado nos dias quentes.",
+  },
+  {
+    id: "tangerina", slug: "tangerina", nome: "Tangerina", categoria: "Fruta", preco: 6.9, unidade: "kg",
+    imagem_url: "/images/produtos/tangerina.jpg", estoque: 30, ativo: true,
+    descricao: "Fácil de descascar, gomos doces e suculentos. Ótima de lanche ou no suco fresquinho.",
+  },
+  {
+    id: "ameixa", slug: "ameixa", nome: "Ameixa", categoria: "Fruta", preco: 13.9, unidade: "kg",
+    imagem_url: "/images/produtos/ameixa.jpg", estoque: 18, ativo: true,
+    descricao: "Polpa macia com doçura equilibrada e uma leve acidez. Ótima pura ou numa compota caseira.",
+  },
+  {
+    id: "caqui", slug: "caqui", nome: "Caqui", categoria: "Fruta", preco: 9.9, unidade: "kg",
+    imagem_url: "/images/produtos/caqui.jpg", estoque: 20, ativo: true,
+    descricao: "Doce e macio quando maduro, com aquele sabor de outono. Ótimo puro ou numa salada de frutas.",
+  },
+  {
+    id: "goiaba", slug: "goiaba", nome: "Goiaba", categoria: "Fruta", preco: 7.9, unidade: "kg",
+    imagem_url: "/images/produtos/goiaba.jpg", estoque: 22, ativo: true,
+    descricao: "Perfumada e doce, com sementinhas crocantes. Ótima pura, no suco ou naquela goiabada caseira.",
+  },
+  {
+    id: "coco", slug: "coco", nome: "Coco", categoria: "Fruta", preco: 7.5, unidade: "unid",
+    imagem_url: "/images/produtos/coco.jpg", estoque: 25, ativo: true,
+    descricao: "Água refrescante e polpa cremosa. Perfeito puro, na vitamina ou no doce de coco.",
+  },
+  {
+    id: "cereja", slug: "cereja", nome: "Cereja", categoria: "Fruta", preco: 39.9, unidade: "cx",
+    imagem_url: "/images/produtos/cereja.jpg", estoque: 10, ativo: true,
+    descricao: "Vermelha, firme e doce na medida certa. Ótima pura, numa taça de sobremesa ou decorando bolos.",
+  },
+  {
+    id: "roma", slug: "roma", nome: "Romã", categoria: "Fruta", preco: 6.9, unidade: "unid",
+    imagem_url: "/images/produtos/roma.jpg", estoque: 18, ativo: true,
+    descricao: "Sementinhas suculentas e levemente ácidas. Ótima pura, na salada ou no suco antioxidante.",
+  },
+  {
+    id: "figo", slug: "figo", nome: "Figo", categoria: "Fruta", preco: 15.9, unidade: "cx",
+    imagem_url: "/images/produtos/figo.jpg", estoque: 12, ativo: true,
+    descricao: "Doce e macio, com aquele toque de mel natural. Ótimo puro, com queijo ou numa geleia caseira.",
+  },
+  {
+    id: "amora", slug: "amora", nome: "Amora", categoria: "Fruta", preco: 11.9, unidade: "cx",
+    imagem_url: "/images/produtos/amora.jpg", estoque: 12, ativo: true,
+    descricao: "Pequena, suculenta e cheia de sabor. Ótima pura, no iogurte ou numa geleia caseira.",
+  },
+  {
+    id: "abobrinha", slug: "abobrinha", nome: "Abobrinha", categoria: "Legume", preco: 6.5, unidade: "kg",
+    imagem_url: "/images/produtos/abobrinha.jpg", estoque: 30, ativo: true,
+    descricao: "Macia e versátil, absorve bem o tempero. Ótima grelhada, refogada ou numa lasanha de forno.",
+  },
+  {
+    id: "abobora", slug: "abobora", nome: "Abóbora", categoria: "Legume", preco: 5.9, unidade: "kg",
+    imagem_url: "/images/produtos/abobora.jpg", estoque: 25, ativo: true,
+    descricao: "Polpa doce e macia, perfeita pro purê, sopa cremosa ou aquele doce de abóbora com coco.",
+  },
+  {
+    id: "berinjela", slug: "berinjela", nome: "Berinjela", categoria: "Legume", preco: 7.9, unidade: "kg",
+    imagem_url: "/images/produtos/berinjela.jpg", estoque: 22, ativo: true,
+    descricao: "Textura macia depois de cozida, sabor suave. Ótima grelhada, na moqueca ou num baba ganoush.",
+  },
+  {
+    id: "pepino", slug: "pepino", nome: "Pepino", categoria: "Legume", preco: 4.9, unidade: "kg",
+    imagem_url: "/images/produtos/pepino.jpg", estoque: 35, ativo: true,
+    descricao: "Crocante e refrescante, quase todo água. Ótimo em salada, no suco detox ou de conserva.",
+  },
+  {
+    id: "beterraba", slug: "beterraba", nome: "Beterraba", categoria: "Legume", preco: 5.5, unidade: "kg",
+    imagem_url: "/images/produtos/beterraba.jpg", estoque: 28, ativo: true,
+    descricao: "Doce e terrosa, colore qualquer prato. Ótima cozida na salada, assada ou no suco com laranja.",
+  },
+  {
+    id: "milho", slug: "milho", nome: "Milho", categoria: "Legume", preco: 2.5, unidade: "unid",
+    imagem_url: "/images/produtos/milho.jpg", estoque: 40, ativo: true,
+    descricao: "Doce e suculento, direto da espiga. Ótimo cozido, na pamonha ou assado na churrasqueira.",
+  },
+  {
+    id: "cebola", slug: "cebola", nome: "Cebola", categoria: "Legume", preco: 6.9, unidade: "kg",
+    imagem_url: "/images/produtos/cebola.jpg", estoque: 45, ativo: true,
+    descricao: "Presente em quase toda receita, dá sabor e base pra qualquer refogado.",
+  },
+  {
+    id: "batata-doce", slug: "batata-doce", nome: "Batata-doce", categoria: "Legume", preco: 6.5, unidade: "kg",
+    imagem_url: "/images/produtos/batata-doce.jpg", estoque: 30, ativo: true,
+    descricao: "Doce e nutritiva, ótima fonte de energia. Perfeita assada, no purê ou na fritura na airfryer.",
+  },
+  {
+    id: "couve", slug: "couve", nome: "Couve", categoria: "Verdura", preco: 3.9, unidade: "maço",
+    imagem_url: "/images/produtos/couve.jpg", estoque: 25, ativo: true,
+    descricao: "Folhas firmes e escuras, clássica na feijoada. Ótima refogada ou numa vitamina verde detox.",
+  },
+  {
+    id: "espinafre", slug: "espinafre", nome: "Espinafre", categoria: "Verdura", preco: 4.5, unidade: "maço",
+    imagem_url: "/images/produtos/espinafre.jpg", estoque: 20, ativo: true,
+    descricao: "Folhas macias e nutritivas. Ótimo refogado, cru na salada ou numa torta cremosa.",
+  },
+  {
+    id: "rucula", slug: "rucula", nome: "Rúcula", categoria: "Verdura", preco: 4.5, unidade: "maço",
+    imagem_url: "/images/produtos/rucula.jpg", estoque: 20, ativo: true,
+    descricao: "Folhas com aquele leve amargor picante. Ótima na salada, na pizza ou finalizando um prato quente.",
+  },
+  {
+    id: "repolho", slug: "repolho", nome: "Repolho", categoria: "Verdura", preco: 5.9, unidade: "unid",
+    imagem_url: "/images/produtos/repolho.jpg", estoque: 22, ativo: true,
+    descricao: "Crocante e versátil, base de qualquer salada colorida ou refogado rápido.",
+  },
 ];
 
 /** Fotos extras buscadas via Magnific/Freepik (20/08) — a 1ª de cada produto continua sendo `imagem_url`. */

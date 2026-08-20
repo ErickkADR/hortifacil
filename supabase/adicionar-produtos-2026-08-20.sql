@@ -1,0 +1,30 @@
+-- Adiciona 25 produtos novos (frutas, legumes e verduras que ainda não existiam).
+-- Gerado a partir de src/lib/data/products-seed.ts. Idempotente: on conflict do nothing.
+
+insert into public.products (id, slug, nome, categoria, preco, unidade, imagem_url, imagens, descricao, estoque, ativo) values
+  ('abacate', 'abacate', 'Abacate', 'Fruta', 9.90, 'kg', '/images/produtos/abacate.jpg', array['/images/produtos/abacate.jpg'], 'Cremoso e nutritivo, no ponto certo pra guacamole, torradas ou puro com uma pitada de sal.', 25, true),
+  ('mamao', 'mamao', 'Mamão', 'Fruta', 6.90, 'unid', '/images/produtos/mamao.jpg', array['/images/produtos/mamao.jpg'], 'Polpa macia e adocicada, rica em fibras. Ótimo puro no café da manhã ou batido com laranja.', 25, true),
+  ('maracuja', 'maracuja', 'Maracujá', 'Fruta', 8.90, 'kg', '/images/produtos/maracuja.jpg', array['/images/produtos/maracuja.jpg'], 'Azedinho e aromático, a fruta certa pro suco refrescante ou pra dar acidez especial na sobremesa.', 20, true),
+  ('melao', 'melao', 'Melão', 'Fruta', 5.90, 'kg', '/images/produtos/melao.jpg', array['/images/produtos/melao.jpg'], 'Polpa suculenta e doce, com mais água que quase qualquer fruta. Perfeito gelado nos dias quentes.', 20, true),
+  ('tangerina', 'tangerina', 'Tangerina', 'Fruta', 6.90, 'kg', '/images/produtos/tangerina.jpg', array['/images/produtos/tangerina.jpg'], 'Fácil de descascar, gomos doces e suculentos. Ótima de lanche ou no suco fresquinho.', 30, true),
+  ('ameixa', 'ameixa', 'Ameixa', 'Fruta', 13.90, 'kg', '/images/produtos/ameixa.jpg', array['/images/produtos/ameixa.jpg'], 'Polpa macia com doçura equilibrada e uma leve acidez. Ótima pura ou numa compota caseira.', 18, true),
+  ('caqui', 'caqui', 'Caqui', 'Fruta', 9.90, 'kg', '/images/produtos/caqui.jpg', array['/images/produtos/caqui.jpg'], 'Doce e macio quando maduro, com aquele sabor de outono. Ótimo puro ou numa salada de frutas.', 20, true),
+  ('goiaba', 'goiaba', 'Goiaba', 'Fruta', 7.90, 'kg', '/images/produtos/goiaba.jpg', array['/images/produtos/goiaba.jpg'], 'Perfumada e doce, com sementinhas crocantes. Ótima pura, no suco ou naquela goiabada caseira.', 22, true),
+  ('coco', 'coco', 'Coco', 'Fruta', 7.50, 'unid', '/images/produtos/coco.jpg', array['/images/produtos/coco.jpg'], 'Água refrescante e polpa cremosa. Perfeito puro, na vitamina ou no doce de coco.', 25, true),
+  ('cereja', 'cereja', 'Cereja', 'Fruta', 39.90, 'cx', '/images/produtos/cereja.jpg', array['/images/produtos/cereja.jpg'], 'Vermelha, firme e doce na medida certa. Ótima pura, numa taça de sobremesa ou decorando bolos.', 10, true),
+  ('roma', 'roma', 'Romã', 'Fruta', 6.90, 'unid', '/images/produtos/roma.jpg', array['/images/produtos/roma.jpg'], 'Sementinhas suculentas e levemente ácidas. Ótima pura, na salada ou no suco antioxidante.', 18, true),
+  ('figo', 'figo', 'Figo', 'Fruta', 15.90, 'cx', '/images/produtos/figo.jpg', array['/images/produtos/figo.jpg'], 'Doce e macio, com aquele toque de mel natural. Ótimo puro, com queijo ou numa geleia caseira.', 12, true),
+  ('amora', 'amora', 'Amora', 'Fruta', 11.90, 'cx', '/images/produtos/amora.jpg', array['/images/produtos/amora.jpg'], 'Pequena, suculenta e cheia de sabor. Ótima pura, no iogurte ou numa geleia caseira.', 12, true),
+  ('abobrinha', 'abobrinha', 'Abobrinha', 'Legume', 6.50, 'kg', '/images/produtos/abobrinha.jpg', array['/images/produtos/abobrinha.jpg'], 'Macia e versátil, absorve bem o tempero. Ótima grelhada, refogada ou numa lasanha de forno.', 30, true),
+  ('abobora', 'abobora', 'Abóbora', 'Legume', 5.90, 'kg', '/images/produtos/abobora.jpg', array['/images/produtos/abobora.jpg'], 'Polpa doce e macia, perfeita pro purê, sopa cremosa ou aquele doce de abóbora com coco.', 25, true),
+  ('berinjela', 'berinjela', 'Berinjela', 'Legume', 7.90, 'kg', '/images/produtos/berinjela.jpg', array['/images/produtos/berinjela.jpg'], 'Textura macia depois de cozida, sabor suave. Ótima grelhada, na moqueca ou num baba ganoush.', 22, true),
+  ('pepino', 'pepino', 'Pepino', 'Legume', 4.90, 'kg', '/images/produtos/pepino.jpg', array['/images/produtos/pepino.jpg'], 'Crocante e refrescante, quase todo água. Ótimo em salada, no suco detox ou de conserva.', 35, true),
+  ('beterraba', 'beterraba', 'Beterraba', 'Legume', 5.50, 'kg', '/images/produtos/beterraba.jpg', array['/images/produtos/beterraba.jpg'], 'Doce e terrosa, colore qualquer prato. Ótima cozida na salada, assada ou no suco com laranja.', 28, true),
+  ('milho', 'milho', 'Milho', 'Legume', 2.50, 'unid', '/images/produtos/milho.jpg', array['/images/produtos/milho.jpg'], 'Doce e suculento, direto da espiga. Ótimo cozido, na pamonha ou assado na churrasqueira.', 40, true),
+  ('cebola', 'cebola', 'Cebola', 'Legume', 6.90, 'kg', '/images/produtos/cebola.jpg', array['/images/produtos/cebola.jpg'], 'Presente em quase toda receita, dá sabor e base pra qualquer refogado.', 45, true),
+  ('batata-doce', 'batata-doce', 'Batata-doce', 'Legume', 6.50, 'kg', '/images/produtos/batata-doce.jpg', array['/images/produtos/batata-doce.jpg'], 'Doce e nutritiva, ótima fonte de energia. Perfeita assada, no purê ou na fritura na airfryer.', 30, true),
+  ('couve', 'couve', 'Couve', 'Verdura', 3.90, 'maço', '/images/produtos/couve.jpg', array['/images/produtos/couve.jpg'], 'Folhas firmes e escuras, clássica na feijoada. Ótima refogada ou numa vitamina verde detox.', 25, true),
+  ('espinafre', 'espinafre', 'Espinafre', 'Verdura', 4.50, 'maço', '/images/produtos/espinafre.jpg', array['/images/produtos/espinafre.jpg'], 'Folhas macias e nutritivas. Ótimo refogado, cru na salada ou numa torta cremosa.', 20, true),
+  ('rucula', 'rucula', 'Rúcula', 'Verdura', 4.50, 'maço', '/images/produtos/rucula.jpg', array['/images/produtos/rucula.jpg'], 'Folhas com aquele leve amargor picante. Ótima na salada, na pizza ou finalizando um prato quente.', 20, true),
+  ('repolho', 'repolho', 'Repolho', 'Verdura', 5.90, 'unid', '/images/produtos/repolho.jpg', array['/images/produtos/repolho.jpg'], 'Crocante e versátil, base de qualquer salada colorida ou refogado rápido.', 22, true)
+on conflict (id) do nothing;
