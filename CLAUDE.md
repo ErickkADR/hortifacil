@@ -78,7 +78,13 @@ redimensiona pra ~700px/qualidade 80 antes de comitar.
   demonstração já os tem via `products-seed.ts`).
 - **Primeiro admin**: depois de aplicar o schema e criar a conta pela tela de login, rodar o
   `update` comentado no fim do `schema.sql` pra virar admin.
-- Checkout não tem gateway de pagamento de verdade — "Débito/Crédito/PIX" é só metadado do
-  pedido, sem cobrança real.
-- Redesign mais amplo do visual (fora do admin) ainda não começou — Erick sinalizou que quer
-  "mudar bastante coisa no design" antes de fechar o projeto, mas sem especificar o quê ainda.
+## Próximas etapas (definidas por Erick em 20/08)
+1. **Redesign do visual** — "mudar bastante coisa no design", ainda sem escopo definido. Alinhar
+   com ele o que exatamente antes de sair mexendo (telas? paleta? tipografia? só a home?).
+2. **Pagamento real com PIX e cartão** — hoje "Débito/Crédito/PIX" em `criarPedido`
+   (`src/app/actions/orders.ts`) é só metadado do pedido, sem gateway nenhum por trás. Vai
+   precisar: escolher provedor (Mercado Pago e Stripe são os candidatos óbvios pro Brasil/PIX),
+   credenciais novas no `.env.local`, fluxo de confirmação (webhook mudando `orders.status` de
+   `aberto` pra `pago`), e decidir se o pedido só entra pra valer depois do pagamento confirmar
+   ou se continua entrando como "aberto" e o status muda depois — isso afeta o `estoque` também
+   (hoje não é baixado em lugar nenhum ao fechar pedido).
