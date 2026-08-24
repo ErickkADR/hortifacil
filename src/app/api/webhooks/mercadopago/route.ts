@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient, isServiceRoleConfigured } from "@/lib/supabase/service";
-import { isMercadoPagoConfigured } from "@/lib/mercadopago/config";
+import { isMercadoPagoConfigured, getAppUrl } from "@/lib/mercadopago/config";
 import { validarAssinaturaWebhook } from "@/lib/mercadopago/webhook";
 import { buscarPayment, buscarOrder } from "@/lib/mercadopago/client";
 
@@ -23,8 +23,27 @@ import { buscarPayment, buscarOrder } from "@/lib/mercadopago/client";
  */
 export async function POST(request: Request) {
   if (!isMercadoPagoConfigured || !isServiceRoleConfigured) {
-    console.error("webhook mercadopago: MERCADO_PAGO_ACCESS_TOKEN/NEXT_PUBLIC_APP_URL ou SUPABASE_SERVICE_ROLE_KEY ausente");
-    return NextResponse.json({ error: "not configured" }, { status: 500 });
+    // DEBUG TEMPORÁRIO (24/08) — diagnosticando 500 "not configured" em produção mesmo depois
+    // de setar as 3 env vars na Vercel. Reverter pra mensagem genérica assim que resolver (ver
+    // hortifacil/CLAUDE.md e a memória do agente, seção "Sessão 24/08").
+    console.error("webhook mercadopago: not configured", {
+      hasMpToken: Boolean(process.env.MERCADO_PAGO_ACCESS_TOKEN),
+      hasAppUrl: Boolean(getAppUrl()),
+      hasSupabaseUrl: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
+      hasServiceRoleKey: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+    });
+    return NextResponse.json(
+      {
+        error: "not configured",
+        debug: {
+          hasMpToken: Boolean(process.env.MERCADO_PAGO_ACCESS_TOKEN),
+          hasAppUrl: Boolean(getAppUrl()),
+          hasSupabaseUrl: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
+          hasServiceRoleKey: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+        },
+      },
+      { status: 500 },
+    );
   }
 
   const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET;
