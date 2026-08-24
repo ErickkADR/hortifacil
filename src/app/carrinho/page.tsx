@@ -11,8 +11,9 @@ import type { MetodoPagamento } from "@/types/database";
 import { ProductThumb } from "@/components/catalog/ProductThumb";
 import { AguardandoPagamento } from "@/components/checkout/AguardandoPagamento";
 
+// Só Crédito e Pix no checkout online (pedido do Erick, 24/08) — Débito continua disponível
+// no POS presencial do admin (AdminOrderBuilder.tsx tem seu próprio array METODOS).
 const METODOS: { id: MetodoPagamento; label: string }[] = [
-  { id: "debito", label: "Débito" },
   { id: "credito", label: "Crédito" },
   { id: "pix", label: "PIX" },
 ];
