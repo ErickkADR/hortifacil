@@ -8,15 +8,19 @@ import { formatBRL } from "@/lib/format";
 import { atualizarStatusPedido } from "@/app/actions/orders";
 
 const STATUS_LABEL: Record<StatusPedido, string> = {
+  pendente_pagamento: "Aguardando pagamento",
   aberto: "Aberto",
   pago: "Pago",
   cancelado: "Cancelado",
+  falhou: "Falhou",
 };
 
 const STATUS_CLASS: Record<StatusPedido, string> = {
+  pendente_pagamento: "bg-sky-500/15 text-sky-700",
   aberto: "bg-amber-500/15 text-amber-700",
   pago: "bg-leaf/15 text-leaf-deep",
   cancelado: "bg-danger/10 text-danger",
+  falhou: "bg-danger/15 text-danger",
 };
 
 const METODO_LABEL: Record<string, string> = {

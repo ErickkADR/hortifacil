@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { Leaf, X } from "lucide-react";
 import { useCart, cartTotal } from "@/store/cart";
 import { formatBRL } from "@/lib/format";
-import { criarPedido } from "@/app/actions/orders";
+import { criarPedidoCliente } from "@/app/actions/orders";
 import type { MetodoPagamento } from "@/types/database";
 import { ProductThumb } from "@/components/catalog/ProductThumb";
+import { AguardandoPagamento } from "@/components/checkout/AguardandoPagamento";
 
 const METODOS: { id: MetodoPagamento; label: string }[] = [
   { id: "debito", label: "Débito" },
@@ -24,14 +25,20 @@ export default function CarrinhoPage() {
 
   const [metodo, setMetodo] = useState<MetodoPagamento | null>(null);
   const [pending, startTransition] = useTransition();
-  const [resultado, setResultado] = useState<{ numero?: number; demo?: boolean } | null>(null);
+  const [demo, setDemo] = useState<{ total: number } | null>(null);
+  const [aguardando, setAguardando] = useState<{
+    orderId: string;
+    numero?: number;
+    total: number;
+    pix?: { qrCodeBase64: string; qrCode: string };
+  } | null>(null);
   const [erro, setErro] = useState<string | null>(null);
 
   function finalizar() {
     if (!metodo) return;
     setErro(null);
     startTransition(async () => {
-      const res = await criarPedido(
+      const res = await criarPedidoCliente(
         items.map((i) => ({ productId: i.product.id, quantidade: i.quantidade })),
         metodo,
       );
@@ -39,29 +46,54 @@ export default function CarrinhoPage() {
         setErro(res.error);
         return;
       }
-      setResultado({ numero: "numero" in res ? res.numero : undefined, demo: res.demo });
+
       clear();
+
+      if (res.demo) {
+        setDemo({ total: res.total });
+        return;
+      }
+
+      if (res.pagamento.tipo === "redirect") {
+        // sai do site pro checkout hospedado do Mercado Pago; a confirmação chega via
+        // webhook e o cliente volta pra /pedido/[id] através do back_url configurado.
+        window.location.href = res.pagamento.initPoint;
+        return;
+      }
+
+      setAguardando({
+        orderId: res.orderId,
+        numero: res.numero,
+        total: res.total,
+        pix: { qrCodeBase64: res.pagamento.qrCodeBase64, qrCode: res.pagamento.qrCode },
+      });
     });
   }
 
-  if (resultado) {
+  if (demo) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg px-6 text-center">
         <Leaf className="h-12 w-12 text-leaf" strokeWidth={1.5} />
         <h1 className="font-display text-3xl text-ink">Pedido recebido!</h1>
-        {resultado.numero && (
-          <p className="text-ink-soft">
-            número <span className="font-semibold text-ink">#{resultado.numero}</span>
-          </p>
-        )}
-        {resultado.demo && (
-          <p className="max-w-xs text-xs text-ink-soft">
-            (modo demonstração — ainda sem Supabase plugado, então esse pedido não foi salvo de verdade)
-          </p>
-        )}
+        <p className="max-w-xs text-xs text-ink-soft">
+          (modo demonstração — ainda sem Supabase plugado, então esse pedido não foi salvo de verdade)
+        </p>
         <Link href="/" className="mt-3 rounded-full bg-leaf-deep px-6 py-3 text-sm font-semibold text-white hover:brightness-110">
           Voltar ao catálogo
         </Link>
+      </main>
+    );
+  }
+
+  if (aguardando) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg px-6">
+        <AguardandoPagamento
+          orderId={aguardando.orderId}
+          numeroInicial={aguardando.numero}
+          totalInicial={aguardando.total}
+          pix={aguardando.pix}
+        />
       </main>
     );
   }

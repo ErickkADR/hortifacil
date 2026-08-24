@@ -2,7 +2,11 @@ export type UserRole = "admin" | "cliente";
 
 export type MetodoPagamento = "debito" | "credito" | "pix";
 
-export type StatusPedido = "aberto" | "pago" | "cancelado";
+// "aberto" fica só por compatibilidade com pedidos antigos (linhas já gravadas antes do
+// pagamento real) — nenhum fluxo novo cria pedido nesse status.
+// Pedido do cliente nasce "pendente_pagamento" e só vira "pago" quando o webhook do Mercado
+// Pago confirmar. Pedido do POS do admin nasce direto "pago" (venda presencial).
+export type StatusPedido = "pendente_pagamento" | "aberto" | "pago" | "cancelado" | "falhou";
 
 export type Profile = {
   id: string;
@@ -32,6 +36,13 @@ export type Order = {
   status: StatusPedido;
   metodo_pagamento: MetodoPagamento | null;
   total: number;
+  // preenchidos pelo fluxo de pagamento do Mercado Pago (nulos em pedido do POS do admin,
+  // que não passa por gateway nenhum)
+  mp_payment_id: string | null;
+  mp_preference_id: string | null;
+  mp_status: string | null;
+  mp_status_detail: string | null;
+  pago_em: string | null;
   criado_em: string;
 };
 
@@ -73,6 +84,18 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      // função SQL em supabase/pagamento-mercadopago-2026-08-24.sql — só a service role tem
+      // grant execute (ver a própria função), chamada pelo webhook do Mercado Pago.
+      confirmar_pagamento_pedido: {
+        Args: {
+          p_order_id: string;
+          p_mp_payment_id: string | null;
+          p_mp_status: string | null;
+          p_mp_status_detail: string | null;
+        };
+        Returns: void;
+      };
+    };
   };
 };

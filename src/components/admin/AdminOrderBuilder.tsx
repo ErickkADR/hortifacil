@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import type { Product, MetodoPagamento } from "@/types/database";
 import { formatBRL } from "@/lib/format";
-import { criarPedido } from "@/app/actions/orders";
+import { criarPedidoAdmin } from "@/app/actions/orders";
 import { ProductThumb } from "@/components/catalog/ProductThumb";
 
 type Linha = { product: Product; quantidade: number };
@@ -56,7 +56,7 @@ export function AdminOrderBuilder({ products }: { products: Product[] }) {
     setMensagem(null);
     setSucesso(false);
     startTransition(async () => {
-      const res = await criarPedido(
+      const res = await criarPedidoAdmin(
         linhas.map((l) => ({ productId: l.product.id, quantidade: l.quantidade })),
         metodo,
       );

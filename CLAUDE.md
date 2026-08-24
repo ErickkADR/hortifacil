@@ -81,10 +81,45 @@ redimensiona pra ~700px/qualidade 80 antes de comitar.
 ## Próximas etapas (definidas por Erick em 20/08)
 1. **Redesign do visual** — "mudar bastante coisa no design", ainda sem escopo definido. Alinhar
    com ele o que exatamente antes de sair mexendo (telas? paleta? tipografia? só a home?).
-2. **Pagamento real com PIX e cartão** — hoje "Débito/Crédito/PIX" em `criarPedido`
-   (`src/app/actions/orders.ts`) é só metadado do pedido, sem gateway nenhum por trás. Vai
-   precisar: escolher provedor (Mercado Pago e Stripe são os candidatos óbvios pro Brasil/PIX),
-   credenciais novas no `.env.local`, fluxo de confirmação (webhook mudando `orders.status` de
-   `aberto` pra `pago`), e decidir se o pedido só entra pra valer depois do pagamento confirmar
-   ou se continua entrando como "aberto" e o status muda depois — isso afeta o `estoque` também
-   (hoje não é baixado em lugar nenhum ao fechar pedido).
+2. 🟡 **Pagamento real com PIX e cartão (Mercado Pago) — código pronto em 24/08, falta credencial
+   e deploy pro Erick prover.** Decisões fechadas: híbrido (Pix via Orders API `/v1/orders` com
+   QR inline, cartão via Checkout Pro redirect); `criarPedido` virou duas funções —
+   `criarPedidoCliente` (nasce `pendente_pagamento`, só confirma via webhook) e
+   `criarPedidoAdmin` (POS presencial, nasce `pago` e já baixa estoque); webhook em
+   `src/app/api/webhooks/mercadopago/route.ts`; SQL em
+   `supabase/pagamento-mercadopago-2026-08-24.sql` (**ainda não rodado no banco**). Falta:
+   Erick gerar as credenciais do Mercado Pago + a service role key do Supabase (ver
+   `.env.example`), linkar o projeto na Vercel (`npx vercel login` interativo, não dá pra fazer
+   por aqui) e rodar o SQL novo. Ver
+   [[hortifacil-engineer/07-plano-pagamento-mercado-pago]] pro estado detalhado.
+
+### Estado da sessão em 24/08 (parte 3) — retomar aqui na próxima
+🔴 **Achado crítico: o código do pagamento (Mercado Pago) nunca foi commitado nem enviado ao
+GitHub.** `git status` mostra `src/app/api/`, `src/lib/mercadopago/`, `src/components/checkout/`,
+`src/lib/supabase/service.ts` e o SQL como untracked; `origin/main` está parado no commit que só
+documentou o plano, não o código. A Vercel builda a partir do GitHub — o deploy em
+**https://hortifacil.vercel.app** (já no ar, feito pelo Erick) **não tem nenhuma dessas rotas**.
+`POST /api/webhooks/mercadopago` devolve 404 por causa disso, não por falta de env var. Antes de
+qualquer teste real, alguém precisa commitar e dar `git push` — **não fiz isso sozinho** (regra
+do workspace: só commitar/pushar quando pedido explicitamente pelo Erick).
+
+O que já foi resolvido nesta parte da sessão (via MCP do Mercado Pago + o que o Erick fez à
+parte):
+- Erick rodou `supabase/pagamento-mercadopago-2026-08-24.sql`, preencheu
+  `SUPABASE_SERVICE_ROLE_KEY` no `.env.local` e deployou na Vercel.
+- `save_webhook` configurado com sucesso (`callback_sandbox = hortifacil.vercel.app/api/webhooks/mercadopago`,
+  topics `payment`+`order`), mas o `MERCADO_PAGO_WEBHOOK_SECRET` completo **não veio** — o MCP só
+  mostra os 7 primeiros caracteres por segurança. Precisa pegar o valor inteiro em
+  `https://www.mercadopago.com.br/developers/panel/app/8413860286566483/webhooks` e colar na
+  linha já preparada no `.env.local`.
+- Confirmado (via `/login` em produção, sem tocar em nada sensível) que
+  `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` já estão na Vercel. As 3 vars novas
+  (`MERCADO_PAGO_ACCESS_TOKEN`, `MERCADO_PAGO_WEBHOOK_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`) ainda
+  precisam ser setadas lá — `npx vercel whoami` continua "Logged out" nesta sessão (sem
+  `.vercel/` linkado, sem `VERCEL_TOKEN`), não dá pra fazer por CLI sem o Erick logar
+  interativamente primeiro.
+
+Ordem pra retomar: (1) Erick autoriza e alguém commita+dá push do código de pagamento, (2) seta
+as 3 env vars na Vercel (dashboard ou CLI logado), (3) redeploy, (4) só aí testar Pix + cartão —
+tem usuário de teste comprador pronto (`3639514870`, R$1.000 de saldo). Detalhe completo em
+[[hortifacil-engineer/07-plano-pagamento-mercado-pago]].
