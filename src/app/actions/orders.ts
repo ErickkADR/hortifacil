@@ -116,7 +116,19 @@ export async function criarPedidoCliente(items: CheckoutItem[], metodoPagamento:
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: order, error: orderError } = await supabase
+  if (!isServiceRoleConfigured) {
+    console.error("criarPedidoCliente: SUPABASE_SERVICE_ROLE_KEY ausente, não dá pra registrar o pedido");
+    return { ok: false as const, error: "Não deu pra registrar o pedido. Tenta de novo." };
+  }
+
+  // Insert com a service role, não o client de RLS: a policy de SELECT em `orders` é "dono ou
+  // admin lê o pedido" (user_id = auth.uid()), e pra convidado os dois lados são null — `null =
+  // null` não é true no Postgres, então o RETURNING do `.select().single()` encadeado no INSERT
+  // não acharia a linha mesmo o INSERT em si tendo passado (a policy de insert é `with check
+  // (true)`). Mesmo motivo por trás de getStatusPedido usar a service role logo abaixo.
+  const servico = createServiceClient();
+
+  const { data: order, error: orderError } = await servico
     .from("orders")
     .insert({ user_id: user?.id ?? null, status: "pendente_pagamento", metodo_pagamento: metodoPagamento, total })
     .select("id, numero")
@@ -127,7 +139,7 @@ export async function criarPedidoCliente(items: CheckoutItem[], metodoPagamento:
     return { ok: false as const, error: "Não deu pra registrar o pedido. Tenta de novo." };
   }
 
-  const { error: itemsError } = await supabase.from("order_items").insert(
+  const { error: itemsError } = await servico.from("order_items").insert(
     linhas.map((l) => ({
       order_id: order.id,
       product_id: l.produto.id,
